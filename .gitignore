@@ -1,5 +1,5 @@
-1  .DS_Store
-2. *.iml 
-3 .idea
-4 out
-5 build
+  .DS_Store
+ *.iml 
+ .idea/*
+ out/
+ build/

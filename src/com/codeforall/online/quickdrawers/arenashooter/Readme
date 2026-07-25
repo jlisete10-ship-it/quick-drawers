@@ -1,0 +1,26 @@
+Game Loop: explorar a arena, combater o inimigo IA, sobreviver e eliminar o inimigo, repeat;
+
+Game Mechanics:
+
+ - Classe Player:
+    - Terá movimento de cima para baixo
+    - Irá atacar o inimigo através de uma tecla, caso acerte o inimigo morre - disparo para a direita
+ - Classe Inimigo:
+    - Perseguir o player
+    - Vai disparar aleatoriamente, se acertar o player morre(vida=0) - disparo para a esquerda
+
+  - Interface Move() - cima e baixo
+     - move();// o player vai mover-se com a interface keyboardhandler; o inimigo vai mover-se aleatoriamente(apenas para cima e para baixo, eixo dos Ys);
+
+  - Interface Shooting():
+     - shoot(); // o player dispara para a direita; inimigo dispara para a esquerda
+
+  - Class Game:
+
+     - metodo init:
+        - Criar o retangulo(arena);
+        - Criar o player - interface keyboarhandler - metodo move()
+        - Criar o inimigo - metodo move aleatorio
+
+     - metodo start:
+        - colocar os jogadores a mover-se; iniciar o jogo
