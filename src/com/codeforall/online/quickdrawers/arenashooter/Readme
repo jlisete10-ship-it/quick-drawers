@@ -15,6 +15,9 @@ Game Mechanics:
   - Interface Shooting():
      - shoot(); // o player dispara para a direita; inimigo dispara para a esquerda
 
+   - Classe Bullet:
+     - QUando o player disparar, o tiro passará a ser independente : player - shoot - cria bullet; bullet-move() --- enemy - colisao - morre
+
   - Class Game:
 
      - metodo init:
@@ -22,5 +25,9 @@ Game Mechanics:
         - Criar o player - interface keyboarhandler - metodo move()
         - Criar o inimigo - metodo move aleatorio
 
+
      - metodo start:
-        - colocar os jogadores a mover-se; iniciar o jogo
+        - iniciar o game loop
+        - atualizar o movimento
+        - atualizar tiros
+        - verificar colisoes
