@@ -1,6 +1,6 @@
 package com.codeforall.online.quickdrawers.arenashooter;
 
-public interface Shoot {
+public interface Shootable {
 
     void shoot();
 }

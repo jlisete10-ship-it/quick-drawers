@@ -1,12 +1,14 @@
 package com.codeforall.online.quickdrawers.arenashooter;
 
-public class Enemy implements Shoot, Movable{
+public class Enemy implements Shootable, Movable{
 
 
 
 
     @Override
     public void move() {
+
+
 
     }
 
