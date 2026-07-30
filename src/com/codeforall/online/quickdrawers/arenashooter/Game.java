@@ -22,12 +22,12 @@ public class Game {
 
     private static final int FRAME_DELAY = 30;
 
-    private Arena arena;
+    //private Arena arena;
     private boolean running;
 
     public void init() {
-        arena = new Arena();
-        arena.draw();
+       // arena = new Arena();
+      //  arena.draw();
     }
 
     public void start() {
