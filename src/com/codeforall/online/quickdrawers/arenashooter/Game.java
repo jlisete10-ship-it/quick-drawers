@@ -56,7 +56,6 @@ public class Game {
     // faz aquilo que deve ser atualizado a cada frame: movimento do Player, depois Enemy, Bullets, colisões,
             //Player, enemy, bullets, and collisions wil be updated here during integration
 
-
         player.move();
 
         for(int i=player.getBullets().size()-1; i>=0; --i){ // se começasse com i=0, depois na proxima iteração nao iria aceder ao novo elemento do indice 0 mas sim ao indice 1
