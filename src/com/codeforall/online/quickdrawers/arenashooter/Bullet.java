@@ -15,7 +15,7 @@ public class Bullet implements Movable{
 
         // Aqui estou a criar uma position propria para a bullet:
         this.position = new Position(grid,startCol,startRow);
-       
+        
 
 
     }
