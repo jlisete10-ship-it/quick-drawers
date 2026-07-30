@@ -5,12 +5,16 @@ import com.codeforall.simplegraphics.keyboard.KeyboardEvent;
 import com.codeforall.simplegraphics.keyboard.KeyboardEventType;
 import com.codeforall.simplegraphics.keyboard.KeyboardHandler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Player implements Shootable, Movable, KeyboardHandler {
 
     private Keyboard keyboard;
     private Directions direction;
     private Position position;
     private Bullet bullet;
+    private List<Bullet> bullets = new ArrayList<>();
 
 
     public Player(Position position) {
@@ -105,9 +109,12 @@ public class Player implements Shootable, Movable, KeyboardHandler {
 
     @Override
     public void shoot () {
-        System.out.println("SPACE is being pressed");
-        bullet = new Bullet(position.getGrid(),this.position);
+        //System.out.println("SPACE is being pressed");
+        bullets.add(new Bullet(position.getGrid(),this.position));// vai me guardando todas as bullets criadas;
 
     }
 
+    public List<Bullet>  getBullets() {
+        return bullets;
+    }
 }

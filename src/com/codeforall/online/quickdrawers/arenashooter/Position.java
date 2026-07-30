@@ -74,4 +74,8 @@ public class Position {
     public Grid getGrid(){
         return grid;
     }
+
+    public void removeBullet(){// irá remover a bullet graficamente
+        this.rectangle.delete();
+    }
 }

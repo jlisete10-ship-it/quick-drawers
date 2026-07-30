@@ -22,15 +22,21 @@ public class Game {
 
     private static final int FRAME_DELAY = 30;
 
-    //private Arena arena;
+    private Grid grid;
     private boolean running;
+    private Player player;
 
     public void init() {
-       // arena = new Arena();
-      //  arena.draw();
+        // prepara o jogo: cria a Grid, a posição inicial e o Player.
+        grid= new Grid(100, 100);
+        grid.init();
+        Position position = new Position(grid, 0,0);
+        player = new Player(position);
+
     }
 
     public void start() {
+        //inicia o jogo e mantém o loop.
         running = true;
 
         while (running) {
@@ -47,7 +53,26 @@ public class Game {
      * 5. Stop the game when a player is defeated.
      */
     private void update() {
+    // faz aquilo que deve ser atualizado a cada frame: movimento do Player, depois Enemy, Bullets, colisões,
             //Player, enemy, bullets, and collisions wil be updated here during integration
+
+
+        player.move();
+
+        for(int i=player.getBullets().size()-1; i>=0; --i){ // se começasse com i=0, depois na proxima iteração nao iria aceder ao novo elemento do indice 0 mas sim ao indice 1
+            // por isso é que estou a começar pelo ultimo indice do array, para ir removendo as balas com segurança
+            if(player.getBullets().get(i).isBulletActive()) {//
+                player.getBullets().get(i).move();
+            }
+            else {
+                player.getBullets().get(i).removeBullet();// remove graficamente
+
+                player.getBullets().remove(i);// remove da lista
+
+            }
+        }
+
+
     }
 
     private void pauseGameLoop () {
