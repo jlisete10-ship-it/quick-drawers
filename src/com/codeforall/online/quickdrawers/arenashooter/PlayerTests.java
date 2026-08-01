@@ -7,7 +7,7 @@ public class PlayerTests {
 
         Grid field = new Grid(100, 100);
         field.init();
-        Position position = new Position(field, 0,0);
+        Position position = new Position(field, 0,0, "/playerShip.png");
         Player player = new Player(position);
 
         while (true) {

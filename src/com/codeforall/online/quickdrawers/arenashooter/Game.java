@@ -25,13 +25,21 @@ public class Game {
     private Grid grid;
     private boolean running;
     private Player player;
+    private Enemy enemy;
 
     public void init() {
         // prepara o jogo: cria a Grid, a posição inicial e o Player.
         grid= new Grid(100, 100);
         grid.init();
-        Position position = new Position(grid, 0,0);
-        player = new Player(position);
+        /**
+         * Adding enemy and player
+         */
+        Position playerPosition = new Position(grid, 0,0, "/playerShip.png");
+        player = new Player(playerPosition);
+
+        Position enemyPosition = new Position(grid, grid.getCols() - 8, 0, "/Enemy.png");
+        enemy = new Enemy(grid, enemyPosition);
+
 
     }
 
@@ -57,7 +65,11 @@ public class Game {
             //Player, enemy, bullets, and collisions wil be updated here during integration
 
         player.move();
+        enemy.move();
 
+        /**
+         * Player bullets
+         */
         for(int i=player.getBullets().size()-1; i>=0; --i){ // se começasse com i=0, depois na proxima iteração nao iria aceder ao novo elemento do indice 0 mas sim ao indice 1
             // por isso é que estou a começar pelo ultimo indice do array, para ir removendo as balas com segurança
             if(player.getBullets().get(i).isBulletActive()) {//
@@ -70,6 +82,10 @@ public class Game {
 
             }
         }
+        /**
+         * Enemy bullets
+         */
+        enemy.moveBullets();
 
 
     }

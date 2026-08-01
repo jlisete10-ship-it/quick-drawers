@@ -110,8 +110,12 @@ public class Player implements Shootable, Movable, KeyboardHandler {
     @Override
     public void shoot () {
         //System.out.println("SPACE is being pressed");
-        bullets.add(new Bullet(position.getGrid(),this.position));// vai me guardando todas as bullets criadas;
-
+        //bullets.add(new Bullet(position.getGrid(),this.position));// vai me guardando todas as bullets criadas;
+        /**
+         * Lorenzo: alteração com picture
+         */
+        Bullet bullet = new Bullet(position.getGrid(), this.position, "/playerBullet.png", true);
+        bullets.add(bullet);
     }
 
     public List<Bullet>  getBullets() {

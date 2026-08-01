@@ -1,15 +1,16 @@
 package com.codeforall.online.quickdrawers.arenashooter;
 
 import com.codeforall.simplegraphics.graphics.Rectangle;
+import com.codeforall.simplegraphics.pictures.Picture;
 
 public class Position {
 
     private int col,row;
     private Grid grid;
-    private Rectangle rectangle;
+    private Picture picture;
 
 
-    public Position(Grid grid, int col, int row){
+    public Position(Grid grid, int col, int row, String imagePath){
         this.grid = grid;
         this.col = col;
         this.row =row;
@@ -18,8 +19,8 @@ public class Position {
 
         int x = grid.columnToX(col);
         int y = grid.rowToY(row);
-        rectangle = new Rectangle(x,y, grid.getCellSize(), grid.getCellSize()); // pseudo creation of player
-        rectangle.fill();
+        picture = new Picture(x,y, imagePath); // pseudo creation of player
+        picture.draw();
 
 
     }
@@ -30,7 +31,7 @@ public class Position {
         }
 
         row--;
-        rectangle.translate(0,-grid.getCellSize());
+        picture.translate(0,-grid.getCellSize());
         return true;
     }
 
@@ -39,17 +40,17 @@ public class Position {
             return false;
         }
         row ++;
-        rectangle.translate(0,grid.getCellSize());
+        picture.translate(0,grid.getCellSize());
         return true;
     }
     public boolean moveRight(){  //seria fazer um boolean em que fazemos um if -- se passar os limites retorna falso, se nao estiver nos limites returna treu e anda para a direita
 
-        if (col==grid.getCols() -1 ){
+        if (col==grid.getCols() -1){
             return false; //random direction
         }
 
         col++;
-        rectangle.translate(grid.getCellSize(),0);
+        picture.translate(grid.getCellSize(),0);
         return true; //continua
     }
 
@@ -59,7 +60,7 @@ public class Position {
         }
 
         col--;
-        rectangle.translate(-grid.getCellSize(),0);
+        picture.translate(-grid.getCellSize(),0);
         return true;
     }
 
@@ -76,6 +77,6 @@ public class Position {
     }
 
     public void removeBullet(){// irá remover a bullet graficamente
-        this.rectangle.delete();
+        this.picture.delete();
     }
 }
