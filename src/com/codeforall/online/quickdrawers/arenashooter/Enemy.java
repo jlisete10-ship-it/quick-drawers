@@ -9,6 +9,10 @@ public class Enemy implements Shootable, Movable{
     private Position position;
     private Directions currentDirection = Directions.UP;
     private int stepsRemaining = 0;
+    private int frameCounter = 0;
+    private static final int MOVE_DELAY = 5;
+    private boolean alive =true;
+    private Bullet bullet;
 
     //creating array list for bullets
     private List<Bullet> bullets = new ArrayList<>();
@@ -23,45 +27,51 @@ public class Enemy implements Shootable, Movable{
 
     @Override
     public void move() {
-        //If steps remaining = zero we choose another direction and how many steps in this direction
-        //logical intention
-        if (stepsRemaining == 0){
+
+       frameCounter++;
+
+       if (frameCounter < MOVE_DELAY) { // para desacelerar o movimento do enemy
+           return;
+        }
+
+        frameCounter = 0;
+
+        // If steps remaining = zero we choose another direction and how many steps in this direction
+        if (stepsRemaining == 0) {
             if (Math.random() < 0.5) {
                 currentDirection = Directions.UP;
             } else {
                 currentDirection = Directions.DOWN;
             }
-            stepsRemaining = (int)(Math.random() * 20) +8;
+            stepsRemaining = (int) (Math.random() * 20) + 8;
         }
-        //Enemy moved or not?
+
         boolean moved;
 
-        if (currentDirection == Directions.UP){
+        if (currentDirection == Directions.UP) {
             moved = position.moveUp();
-        }else {
+        } else {
             moved = position.moveDown();
         }
 
-        //If enemy couldn't move (hit the edge)
         if (!moved) {
-            if (currentDirection == Directions.UP){
+            if (currentDirection == Directions.UP) {
                 currentDirection = Directions.DOWN;
                 position.moveDown();
-            }else {
+            } else {
                 currentDirection = Directions.UP;
                 position.moveUp();
             }
-            stepsRemaining = (int)(Math.random() * 20) +8;
-        // if he could move just update steps remaining
-        }else {
+
+            stepsRemaining = (int) (Math.random() * 20) + 8;
+
+        } else {
             stepsRemaining--;
         }
 
-        //Shooting cycle with real time
-        //currentTimeMillis = used to get the current time
         long currentTime = System.currentTimeMillis();
-        //2000 =~2 secs
-        if (currentTime - lastShootTime >= 1000){
+
+        if (currentTime - lastShootTime >= 1000) {
             shoot();
             lastShootTime = currentTime;
         }
@@ -73,7 +83,7 @@ public class Enemy implements Shootable, Movable{
         bullets.add(bullet);
     }
 
-    public void moveBullets() {
+    public void moveEnemyBullets() {
         // Loop backwards so removing an item doesn't shift the
         // indices of the elements we still need to check
         for (int i = bullets.size() - 1; i >= 0; i--) {
@@ -86,8 +96,21 @@ public class Enemy implements Shootable, Movable{
             }
         }
     }
+
     public List<Bullet> getBullets(){
         return bullets;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void hit(){
+        alive= false;
     }
 }
 

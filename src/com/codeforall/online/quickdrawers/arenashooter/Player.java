@@ -14,6 +14,7 @@ public class Player implements Shootable, Movable, KeyboardHandler {
     private Directions direction;
     private Position position;
     private Bullet bullet;
+    private boolean alive = false;
     private List<Bullet> bullets = new ArrayList<>();
 
 
@@ -121,4 +122,33 @@ public class Player implements Shootable, Movable, KeyboardHandler {
     public List<Bullet>  getBullets() {
         return bullets;
     }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void movePlayerBullets(){
+        for(int i=this.getBullets().size()-1; i>=0; --i){ // se começasse com i=0, depois na proxima iteração nao iria aceder ao novo elemento do indice 0 mas sim ao indice 1
+            // por isso é que estou a começar pelo ultimo indice do array, para ir removendo as balas com segurança
+            if(this.getBullets().get(i).isBulletActive()) {//
+                this.getBullets().get(i).move();
+            }
+            else {
+                this.getBullets().get(i).removeBullet();// remove graficamente
+
+                this.getBullets().remove(i);// remove da lista
+
+            }
+        }
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public boolean hit(){
+        return !alive;
+    }
+
+
 }

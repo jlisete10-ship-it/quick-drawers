@@ -72,11 +72,30 @@ public class Position {
         return row;
     }
 
-    public Grid getGrid(){
-        return grid;
+    public void removeBullet(){// irá remover a bullet graficamente
+        picture.translate(-5000, -5000);
+        picture.delete();
+
     }
 
-    public void removeBullet(){// irá remover a bullet graficamente
-        this.picture.delete();
+    public Grid getGrid() {
+        return grid;
+    }
+    // Estes getters abaixo servem para aceder às coordenadas gráficas da picture; iremos usá-las para as colisoes
+
+    public int getCollisionX() {
+        return picture.getX() + 15;
+    }
+
+    public int getCollisionY() {
+        return picture.getY() + 15;
+    }
+
+    public int getCollisionWidth() {
+        return picture.getWidth() - 30;
+    }
+
+    public int getCollisionHeight() {
+        return picture.getHeight() - 30;
     }
 }

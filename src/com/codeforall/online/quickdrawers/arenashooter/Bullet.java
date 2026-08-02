@@ -4,9 +4,11 @@ public class Bullet implements Movable{
 
     private Position position;
     private Grid grid;
-    private Directions direction;
     private boolean bulletOn = true;
     private boolean movingRight;
+    private int frameCounter = 0;
+    private static final int MOVE_DELAY = 3;
+
 
     //public Bullet (Grid grid, Position position){// este position recebido como parametro é o position do player
         // A Bullet recebe a posição atual do Player, consulta onde ele está e define o
@@ -50,16 +52,25 @@ public class Bullet implements Movable{
          * Which way the bullet is going, move the bullet in this direction and
          * if the bullet is off the limits turn it off
          */
-                boolean stillInsideGrid;
+        frameCounter++;
 
-                if (movingRight) {
-                    stillInsideGrid = position.moveRight();
-                }else {
-                    stillInsideGrid = position.moveLeft();
-                }
-                if (!stillInsideGrid) {
-                    bulletOn = false;
-                }
+        if (frameCounter < MOVE_DELAY) {// controls the speed of the bullet
+            return;
+        }
+
+        frameCounter = 0;
+
+        boolean stillInsideGrid;
+
+        if (movingRight) {
+            stillInsideGrid = position.moveRight();
+        } else {
+            stillInsideGrid = position.moveLeft();
+        }
+
+        if (!stillInsideGrid) {
+            bulletOn = false;
+        }
     }
 
     public boolean isBulletActive(){
@@ -69,4 +80,19 @@ public class Bullet implements Movable{
     public void removeBullet(){
         this.position.removeBullet();
     }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void deactivate() {
+
+        if (!bulletOn) {
+            return;
+        }
+
+        bulletOn = false;
+    }
+
+
 }

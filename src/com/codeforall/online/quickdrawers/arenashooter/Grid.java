@@ -5,19 +5,25 @@ import com.codeforall.simplegraphics.graphics.Rectangle;
 public class Grid {
 
     public static final int PADDING = 10;
-
-    private int cellSize = 15;
+    public static final int WINDOW_WIDTH = 1500;
+    public static final int WINDOW_HEIGHT = 800;
+    private int cellSize = 82;
     private int cols;
     private int rows;
+    private Rectangle field;
 
-    public Grid(int cols, int rows) {
-        this.cols = cols;
-        this.rows = rows;
+    public Grid() {
+        this.cols = (WINDOW_WIDTH - 2 * PADDING) / cellSize;
+        this.rows = (WINDOW_HEIGHT - 2 * PADDING) / cellSize;
     }
 
     public void init() {// it will initialize the field:
-        Rectangle field = new Rectangle(PADDING, PADDING, cols * cellSize, rows * cellSize);
+        field = new Rectangle(PADDING, PADDING, cols * cellSize, rows * cellSize);
         field.draw();
+
+    }
+    public Rectangle getField() {
+        return field;
     }
 
     public int getCellSize() {
