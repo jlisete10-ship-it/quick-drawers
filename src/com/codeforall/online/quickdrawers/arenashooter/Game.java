@@ -1,5 +1,11 @@
 package com.codeforall.online.quickdrawers.arenashooter;
 
+import com.codeforall.simplegraphics.keyboard.Keyboard;
+import com.codeforall.simplegraphics.keyboard.KeyboardEvent;
+import com.codeforall.simplegraphics.keyboard.KeyboardEventType;
+import com.codeforall.simplegraphics.keyboard.KeyboardHandler;
+import com.codeforall.simplegraphics.pictures.Picture;
+
 public class Game {
 
     private static final int FRAME_DELAY = 30;
@@ -9,8 +15,14 @@ public class Game {
     private Player player;
     private Enemy enemy;
     private CollisionDetector collisionDetector;
+    private Picture background;
+    private Picture gameOver;
+    private Picture youWin;
 
     public void init() {
+
+        background = new Picture(0,0, "/space4.jpg");
+        background.draw();
 
         grid = new Grid();
         grid.init();
@@ -22,6 +34,7 @@ public class Game {
         enemy = new Enemy(grid, enemyPosition);
 
         collisionDetector = new CollisionDetector();
+
     }
 
     public void start() {
@@ -108,10 +121,24 @@ public class Game {
         } else if (enemyWasHit) {
 
             System.out.println("Player wins!");
+            youWin = new Picture(0,0, "/youWin.png");
+
+            int centerX = (background.getWidth() - youWin.getWidth()) / 2;
+            int centerY = (background.getHeight() - youWin.getHeight()) / 2;
+            youWin.translate(centerX, centerY);
+            youWin.draw();
+
 
         } else {
 
             System.out.println("Enemy wins!");
+            gameOver = new Picture(0,0, "/game_over.png");
+
+            int centerX = (background.getWidth() - gameOver.getWidth()) / 2;
+            int centerY = (background.getHeight() - gameOver.getHeight()) / 2;
+            gameOver.translate(centerX, centerY);
+            gameOver.draw();
+
         }
 
         stop();
@@ -132,4 +159,5 @@ public class Game {
     public void stop() {
         running = false;
     }
+
 }

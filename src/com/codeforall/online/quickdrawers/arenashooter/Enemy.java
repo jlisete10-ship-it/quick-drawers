@@ -112,5 +112,6 @@ public class Enemy implements Shootable, Movable{
     public void hit(){
         alive= false;
     }
+
 }
 

@@ -98,4 +98,5 @@ public class Position {
     public int getCollisionHeight() {
         return picture.getHeight() - 30;
     }
+
 }
