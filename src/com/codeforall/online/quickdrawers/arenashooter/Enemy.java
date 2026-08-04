@@ -30,7 +30,7 @@ public class Enemy implements Shootable, Movable{
 
        frameCounter++;
 
-       if (frameCounter < MOVE_DELAY) { // para desacelerar o movimento do enemy
+       if (frameCounter < MOVE_DELAY) { // to desacelerate the enemy movement
            return;
         }
 

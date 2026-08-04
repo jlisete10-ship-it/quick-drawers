@@ -15,11 +15,11 @@ public class Position {
         this.col = col;
         this.row =row;
 
-        // graphical conversion of col and row into pixels:
+      //  Convert the grid coordinates into pixel coordinates.
 
         int x = grid.columnToX(col);
         int y = grid.rowToY(row);
-        picture = new Picture(x,y, imagePath); // pseudo creation of player
+        picture = new Picture(x,y, imagePath); // Create and draw the picture at the calculated position.
         picture.draw();
 
 
@@ -43,7 +43,7 @@ public class Position {
         picture.translate(0,grid.getCellSize());
         return true;
     }
-    public boolean moveRight(){  //seria fazer um boolean em que fazemos um if -- se passar os limites retorna falso, se nao estiver nos limites returna treu e anda para a direita
+    public boolean moveRight(){
 
         if (col==grid.getCols() -1){
             return false; //random direction
@@ -72,7 +72,7 @@ public class Position {
         return row;
     }
 
-    public void removeBullet(){// irá remover a bullet graficamente
+    public void removeBullet(){// it will remove the bullet graphically
         picture.translate(-5000, -5000);
         picture.delete();
 
@@ -81,7 +81,7 @@ public class Position {
     public Grid getGrid() {
         return grid;
     }
-    // Estes getters abaixo servem para aceder às coordenadas gráficas da picture; iremos usá-las para as colisoes
+    //These getters return the collision hitbox of the picture.
 
     public int getCollisionX() {
         return picture.getX() + 15;
@@ -90,6 +90,8 @@ public class Position {
     public int getCollisionY() {
         return picture.getY() + 15;
     }
+
+    // The hitbox is smaller than the image to make collision detection more accurate.
 
     public int getCollisionWidth() {
         return picture.getWidth() - 30;

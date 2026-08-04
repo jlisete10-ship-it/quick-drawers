@@ -7,7 +7,7 @@ public class CollisionDetector {
     }
 
     private boolean overlaps(Position first, Position second) {
-        //com este método vou passando por parametros as posições dos objetos(bala do player e posição do enemy e vice versa)
+        //Compare the collision hitboxes of two objects - (e.g. player bullet vs enemy or enemy bullet vs player).
 
         return first.getCollisionX() < second.getCollisionX() + second.getCollisionWidth()
                 && first.getCollisionX() + first.getCollisionWidth() > second.getCollisionX()

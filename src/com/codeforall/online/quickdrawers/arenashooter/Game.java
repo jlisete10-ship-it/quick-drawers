@@ -149,9 +149,7 @@ public class Game {
         try {
             Thread.sleep(FRAME_DELAY);
 
-        } catch (InterruptedException exception) {
-
-            Thread.currentThread().interrupt();
+        } catch (InterruptedException e) {
             stop();
         }
     }

@@ -20,8 +20,6 @@ public class Bullet implements Movable{
      * if false, enemy bullet for the left
      */
      public Bullet(Grid grid, Position shooterPosition, String imagePath, boolean movingRight){
-        //int startCol = position.getCol()+1;
-        //int startRow = position.getRow();
         this.grid = grid;
         this.movingRight = movingRight;
 
@@ -36,7 +34,7 @@ public class Bullet implements Movable{
         //Creat the bullet in the same line of the one who shot
         int startRow = shooterPosition.getRow();
 
-        // Aqui estou a criar uma position propria para a bullet:
+        // Creating a position for bullet
         this.position = new Position(grid, startCol, startRow, imagePath);
         
 
@@ -45,9 +43,6 @@ public class Bullet implements Movable{
 
     @Override
     public void move() {
-        //if (!this.position.moveRight()){ // se a bullet chegar ao limite da wall direita
-                //bulletOn = false;
-                //return;
         /**
          * Which way the bullet is going, move the bullet in this direction and
          * if the bullet is off the limits turn it off

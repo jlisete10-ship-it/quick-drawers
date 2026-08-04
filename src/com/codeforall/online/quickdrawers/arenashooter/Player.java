@@ -110,8 +110,7 @@ public class Player implements Shootable, Movable, KeyboardHandler {
 
     @Override
     public void shoot () {
-        //System.out.println("SPACE is being pressed");
-        //bullets.add(new Bullet(position.getGrid(),this.position));// vai me guardando todas as bullets criadas;
+
         /**
          * Lorenzo: alteração com picture
          */
@@ -128,15 +127,15 @@ public class Player implements Shootable, Movable, KeyboardHandler {
     }
 
     public void movePlayerBullets(){
-        for(int i=this.getBullets().size()-1; i>=0; --i){ // se começasse com i=0, depois na proxima iteração nao iria aceder ao novo elemento do indice 0 mas sim ao indice 1
-            // por isso é que estou a começar pelo ultimo indice do array, para ir removendo as balas com segurança
+        for(int i=this.getBullets().size()-1; i>=0; --i){
+            //Iterate backwards so bullets can be safely removed without affecting the remaining indices.
             if(this.getBullets().get(i).isBulletActive()) {//
                 this.getBullets().get(i).move();
             }
             else {
-                this.getBullets().get(i).removeBullet();// remove graficamente
+                this.getBullets().get(i).removeBullet();// remove graphically
 
-                this.getBullets().remove(i);// remove da lista
+                this.getBullets().remove(i);// remove from list
 
             }
         }
