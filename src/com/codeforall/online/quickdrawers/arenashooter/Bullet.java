@@ -5,6 +5,7 @@ public class Bullet implements Movable{
     private Position position;
     private Grid grid;
     private boolean bulletOn = true;
+    //player bullet = true > right
     private boolean movingRight;
     private int frameCounter = 0;
     private static final int MOVE_DELAY = 3;
@@ -14,14 +15,12 @@ public class Bullet implements Movable{
         // A Bullet recebe a posição atual do Player, consulta onde ele está e define o
         // início uma coluna à direita, mantendo a mesma linha.
     /**
-     * Lorenzo:
      * Creating a new Bullet Constructor with Grid, Shooter Position (Player or Enemy),
      * the image path and a boolean "moving right" > if true player bullet for the right
      * if false, enemy bullet for the left
      */
      public Bullet(Grid grid, Position shooterPosition, String imagePath, boolean movingRight){
-        //int startCol = position.getCol()+1;
-        //int startRow = position.getRow();
+
         this.grid = grid;
         this.movingRight = movingRight;
 
@@ -45,9 +44,7 @@ public class Bullet implements Movable{
 
     @Override
     public void move() {
-        //if (!this.position.moveRight()){ // se a bullet chegar ao limite da wall direita
-                //bulletOn = false;
-                //return;
+
         /**
          * Which way the bullet is going, move the bullet in this direction and
          * if the bullet is off the limits turn it off
