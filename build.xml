@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+
+<project name="quick-drawers" default="jarfile">
+
+    <!-- Project properties -->
+    <target name="init">
+
+        <property name="project.name" value="quick-drawers"/>
+
+        <property name="src.dir" value="src"/>
+        <property name="build.dir" value="build"/>
+        <property name="classes.dir" value="${build.dir}/classes"/>
+
+        <property name="resources.dir" value="resources"/>
+        <property name="lib.dir" value="lib"/>
+
+        <property name="main.class"
+                  value="com.codeforall.online.quickdrawers.arenashooter.Main"/>
+
+        <path id="classpath">
+            <fileset dir="${lib.dir}" includes="**/*.jar"/>
+        </path>
+
+    </target>
+
+
+    <!-- Create build folders -->
+    <target name="prepare" depends="init">
+
+        <mkdir dir="${classes.dir}"/>
+
+    </target>
+
+
+    <!-- Clean -->
+    <target name="clean" depends="init">
+
+        <delete dir="${build.dir}"/>
+
+    </target>
+
+
+    <!-- Compile -->
+    <target name="compile" depends="prepare">
+
+        <javac
+                srcdir="${src.dir}"
+                destdir="${classes.dir}"
+                source="17"
+                target="17">
+
+            <classpath refid="classpath"/>
+
+        </javac>
+
+    </target>
+
+
+    <!-- Create executable jar -->
+    <target name="jarfile" depends="compile">
+
+        <jar destfile="${build.dir}/${project.name}.jar"
+             basedir="${classes.dir}">
+
+            <manifest>
+
+                <attribute
+                        name="Main-Class"
+                        value="${main.class}"/>
+
+                <attribute
+                        name="Class-Path"
+                        value="${lib.dir}"/>
+
+            </manifest>
+
+            <zipgroupfileset
+                    dir="${lib.dir}"
+                    includes="*.jar"/>
+
+            <fileset dir="${resources.dir}"/>
+
+        </jar>
+
+    </target>
+
+</project>

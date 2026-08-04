@@ -1,33 +1,45 @@
-Game Loop: explorar a arena, combater o inimigo IA, sobreviver e eliminar o inimigo, repeat;
+Game Loop:
+- Shoot the enemy AI, survive, defeat the enemy, and repeat.
 
 Game Mechanics:
 
- - Classe Player:
-    - Terá movimento de cima para baixo
-    - Irá atacar o inimigo através de uma tecla, caso acerte o inimigo morre - disparo para a direita
- - Classe Inimigo:
-    - Perseguir o player
-    - Vai disparar aleatoriamente, se acertar o player morre(vida=0) - disparo para a esquerda
+- Player class:
+    - Moves up and down.
+    - Shoots when the player presses a key.
+    - If a bullet hits the enemy, the enemy dies.
+    - Bullets travel to the right.
 
-  - Interface Move() - cima e baixo
-     - move();// o player vai mover-se com a interface keyboardhandler; o inimigo vai mover-se aleatoriamente(apenas para cima e para baixo, eixo dos Ys);
+- Enemy class:
+    - Moves randomly up and down.
+      (Future improvement: make the enemy follow the player.)
+    - Shoots automatically at regular intervals.
+    - If a bullet hits the player, the player dies (health = 0).
+    - Bullets travel to the left.
 
-  - Interface Shooting():
-     - shoot(); // o player dispara para a direita; inimigo dispara para a esquerda
+- Movable interface:
+    - move();
+    - The player moves according to keyboard input.
+    - The enemy moves randomly along the Y-axis.
 
-   - Classe Bullet:
-     - QUando o player disparar, o tiro passará a ser independente : player - shoot - cria bullet; bullet-move() --- enemy - colisao - morre
+- Shootable interface:
+    - shoot();
+    - The player shoots to the right.
+    - The enemy shoots to the left.
 
-  - Class Game:
+- Bullet class:
+    - Once the player shoots, the bullet becomes an independent object.
+    - Player -> shoot() -> creates a Bullet -> Bullet.move() -> collision -> enemy dies.
 
-     - metodo init:
-        - Criar o retangulo(arena);
-        - Criar o player - interface keyboarhandler - metodo move()
-        - Criar o inimigo - metodo move aleatorio
+- Game class:
 
+    - init():
+        - Create the game arena.
+        - Create the player.
+        - Register the keyboard controls.
+        - Create the enemy.
 
-     - metodo start:
-        - iniciar o game loop
-        - atualizar o movimento
-        - atualizar tiros
-        - verificar colisoes
+    - start():
+        - Start the game loop.
+        - Update player and enemy movement.
+        - Update bullets.
+        - Check collisions.
