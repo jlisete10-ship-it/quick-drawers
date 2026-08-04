@@ -10,7 +10,7 @@ public class Enemy implements Shootable, Movable{
     private Directions currentDirection = Directions.UP;
     private int stepsRemaining = 0;
     private int frameCounter = 0;
-    private static final int MOVE_DELAY = 5;
+    private static final int MOVE_DELAY = 10;
     private boolean alive =true;
     private Bullet bullet;
 
@@ -79,7 +79,7 @@ public class Enemy implements Shootable, Movable{
 
     @Override
     public void shoot() {
-        Bullet bullet = new Bullet(grid, position, "/enemyBullet.png", false);
+        Bullet bullet = new Bullet(grid, position, "resources/enemyBullet.png", false);
         bullets.add(bullet);
     }
 
