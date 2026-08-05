@@ -7,7 +7,7 @@ public class Bullet implements Movable{
     private boolean bulletOn = true;
     private boolean movingRight;
     private int frameCounter = 0;
-    private static final int MOVE_DELAY = 3;
+    private static final int MOVE_DELAY = 10;
 
 
     //public Bullet (Grid grid, Position position){// este position recebido como parametro é o position do player

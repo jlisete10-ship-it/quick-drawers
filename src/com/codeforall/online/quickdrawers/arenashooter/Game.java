@@ -24,16 +24,16 @@ public class Game {
 
     public void init() {
 
-        background = new Picture(0,0, "/space4.jpg");
+        background = new Picture(0,0, "resources/space4.jpg");
         background.draw();
 
         grid = new Grid();
         grid.init();
 
-        Position playerPosition = new Position(grid, 0, 0, "/playerShip.png");
+        Position playerPosition = new Position(grid, 0, 0, "resources/playerShip.png");
         player = new Player(playerPosition);
 
-        Position enemyPosition = new Position(grid, grid.getCols() - 2, 0, "/Enemy.png");
+        Position enemyPosition = new Position(grid, grid.getCols() - 2, 0, "resources/Enemy.png");
         enemy = new Enemy(grid, enemyPosition);
 
         collisionDetector = new CollisionDetector();
@@ -136,8 +136,7 @@ public class Game {
         if (enemyWasHit) {
 
             System.out.println("Player wins!");
-
-            youWin = new Picture(0, 0, "/youWin.png");
+            youWin = new Picture(0, 0, "resources/youWin.png");
 
             int centerX = (background.getWidth() - youWin.getWidth()) / 2;
             int centerY = (background.getHeight() - youWin.getHeight()) / 2;
@@ -155,8 +154,7 @@ public class Game {
         if (!player.isAlive()) {
 
             System.out.println("Enemy wins!");
-
-            gameOver = new Picture(0, 0, "/game_over.png");
+            gameOver = new Picture(0, 0, "resources/game_over.png");
 
             int centerX = (background.getWidth() - gameOver.getWidth()) / 2;
             int centerY = (background.getHeight() - gameOver.getHeight()) / 2;
@@ -196,7 +194,7 @@ public class Game {
             Picture lifeIcon = new Picture(
                     startX,
                     startY,
-                    "/playerLife.png"
+                    "resources/playerLife.png"
             );
 
             lifeIcon.draw();

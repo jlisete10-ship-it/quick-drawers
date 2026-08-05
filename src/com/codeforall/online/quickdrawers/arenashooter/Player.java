@@ -115,7 +115,7 @@ public class Player implements Shootable, Movable, KeyboardHandler {
         /**
          * Lorenzo: alteração com picture
          */
-        Bullet bullet = new Bullet(position.getGrid(), this.position, "/playerBullet.png", true);
+        Bullet bullet = new Bullet(position.getGrid(), this.position, "resources/playerBullet.png", true);
         bullets.add(bullet);
     }
 
