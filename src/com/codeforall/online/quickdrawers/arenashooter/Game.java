@@ -5,6 +5,8 @@ import com.codeforall.simplegraphics.keyboard.KeyboardEvent;
 import com.codeforall.simplegraphics.keyboard.KeyboardEventType;
 import com.codeforall.simplegraphics.keyboard.KeyboardHandler;
 import com.codeforall.simplegraphics.pictures.Picture;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
 
@@ -18,6 +20,7 @@ public class Game {
     private Picture background;
     private Picture gameOver;
     private Picture youWin;
+    private List<Picture> lifeIcons = new ArrayList<>();
 
     public void init() {
 
@@ -34,6 +37,7 @@ public class Game {
         enemy = new Enemy(grid, enemyPosition);
 
         collisionDetector = new CollisionDetector();
+        drawPlayerLives();
 
     }
 
@@ -105,6 +109,7 @@ public class Game {
 
                 bullet.deactivate();
                 player.hit();
+                updatePlayerLivesDisplay();
 
                 playerWasHit = true;
             }
@@ -114,34 +119,53 @@ public class Game {
             return;
         }
 
-        if (enemyWasHit && playerWasHit) {
+/**
+ * Both were hit and neither survived
+ */
+        if (enemyWasHit && playerWasHit && !player.isAlive()) {
 
             System.out.println("Draw!");
 
-        } else if (enemyWasHit) {
+            stop();
+            return;
+        }
+
+/**
+ * The enemy was hit
+ */
+        if (enemyWasHit) {
 
             System.out.println("Player wins!");
-            youWin = new Picture(0,0, "/youWin.png");
+
+            youWin = new Picture(0, 0, "/youWin.png");
 
             int centerX = (background.getWidth() - youWin.getWidth()) / 2;
             int centerY = (background.getHeight() - youWin.getHeight()) / 2;
+
             youWin.translate(centerX, centerY);
             youWin.draw();
 
+            stop();
+            return;
+        }
 
-        } else {
+/**
+ * The player only loses when no lives remain
+ */
+        if (!player.isAlive()) {
 
             System.out.println("Enemy wins!");
-            gameOver = new Picture(0,0, "/game_over.png");
+
+            gameOver = new Picture(0, 0, "/game_over.png");
 
             int centerX = (background.getWidth() - gameOver.getWidth()) / 2;
             int centerY = (background.getHeight() - gameOver.getHeight()) / 2;
+
             gameOver.translate(centerX, centerY);
             gameOver.draw();
 
+            stop();
         }
-
-        stop();
     }
 
     private void pauseGameLoop() {
@@ -156,6 +180,43 @@ public class Game {
 
     public void stop() {
         running = false;
+    }
+
+    private void drawPlayerLives() {
+
+        int spacing = 10;
+
+        // Keep the life icons away from the player's movement column
+        int startX = grid.columnToX(2);
+
+        int startY = 20;
+
+        for (int i = 0; i < player.getLives(); i++) {
+
+            Picture lifeIcon = new Picture(
+                    startX,
+                    startY,
+                    "/playerLife.png"
+            );
+
+            lifeIcon.draw();
+            lifeIcons.add(lifeIcon);
+
+            // Place the next icon after the current image
+            startX += lifeIcon.getWidth() + spacing;
+        }
+    }
+
+    private void updatePlayerLivesDisplay() {
+
+        // Remove icons until the display matches the player's current lives
+        while (lifeIcons.size() > player.getLives()) {
+
+            int lastIconIndex = lifeIcons.size() - 1;
+            Picture lostLifeIcon = lifeIcons.remove(lastIconIndex);
+
+            lostLifeIcon.delete();
+        }
     }
 
 }
