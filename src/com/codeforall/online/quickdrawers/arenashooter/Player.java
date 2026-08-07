@@ -13,8 +13,8 @@ public class Player implements Shootable, Movable, KeyboardHandler {
     private Keyboard keyboard;
     private Directions direction;
     private Position position;
-    private static final int INITIAL_LIVES = 3;
-    private int lives = INITIAL_LIVES;
+    private Bullet bullet;
+    private boolean alive = false;
     private List<Bullet> bullets = new ArrayList<>();
 
 
@@ -140,24 +140,13 @@ public class Player implements Shootable, Movable, KeyboardHandler {
             }
         }
     }
-    public int getLives() {
-        return lives;
-    }
 
     public boolean isAlive() {
-        return lives >0;
+        return alive;
     }
 
-    public boolean hit() {
-
-        // Prevent the number of lives from becoming negative
-        if (lives > 0) {
-            lives--;
-        }
-
-        System.out.println("Player lives: " + lives);
-
-        return isAlive();
+    public boolean hit(){
+        return !alive;
     }
 
 
