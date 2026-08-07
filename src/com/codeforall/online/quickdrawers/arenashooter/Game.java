@@ -29,16 +29,16 @@ public class Game {
 
     public void init() {
         System.out.println(System.getProperty("user.dir"));
-        background = new Picture(0,0, "/space4.jpg");
+        background = new Picture(0,0, "resources/space4.jpg");
         background.draw();
 
         grid = new Grid();
         grid.init();
 
-        Position playerPosition = new Position(grid, 0, 0, "/playerShip.png");
+        Position playerPosition = new Position(grid, 0, 0, "resources/playerShip.png");
         player = new Player(playerPosition);
 
-        Position enemyPosition = new Position(grid, grid.getCols() - 2, 0, "/Enemy.png");
+        Position enemyPosition = new Position(grid, grid.getCols() - 2, 0, "resources/Enemy.png");
         enemy = new Enemy(grid, enemyPosition);
 
         collisionDetector = new CollisionDetector();
@@ -128,6 +128,7 @@ public class Game {
                 updatePlayerLivesDisplay();
 
                 playerWasHit = true;
+
             }
         }
 
@@ -160,7 +161,7 @@ public class Game {
             System.out.println("Your score: " + tryScore);
             System.out.println("Highscore: " + highScore);
 
-            youWin = new Picture(0, 0, "/youWin.png");
+            youWin = new Picture(0, 0, "resources/youWin.png");
 
             int centerX = (background.getWidth() - youWin.getWidth()) / 2;
             int centerY = (background.getHeight() - youWin.getHeight()) / 2;
@@ -179,7 +180,7 @@ public class Game {
 
             System.out.println("Enemy wins!");
 
-            gameOver = new Picture(0, 0, "/game_over.png");
+            gameOver = new Picture(0, 0, "resources/game_over.png");
 
             int centerX = (background.getWidth() - gameOver.getWidth()) / 2;
             int centerY = (background.getHeight() - gameOver.getHeight()) / 2;
@@ -210,6 +211,8 @@ public class Game {
         running = false;
     }
 
+
+
     private void drawPlayerLives() {
 
         int spacing = 10;
@@ -221,11 +224,7 @@ public class Game {
 
         for (int i = 0; i < player.getLives(); i++) {
 
-            Picture lifeIcon = new Picture(
-                    startX,
-                    startY,
-                    "/playerLife.png"
-            );
+            Picture lifeIcon = new Picture(startX, startY, "resources/playerLife.png");
 
             lifeIcon.draw();
             lifeIcons.add(lifeIcon);
@@ -234,6 +233,7 @@ public class Game {
             startX += lifeIcon.getWidth() + spacing;
         }
     }
+
 
     private void updatePlayerLivesDisplay() {
 
