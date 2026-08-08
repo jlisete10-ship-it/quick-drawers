@@ -10,7 +10,7 @@ import com.codeforall.simplegraphics.pictures.Picture;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game {
+public class Game{
 
     private static final int FRAME_DELAY = 30;
 
@@ -26,8 +26,15 @@ public class Game {
     private List<Picture> lifeIcons = new ArrayList<>();
     private int tryScore;
     private int highScore;
+    private List<Enemy> enemies = new ArrayList<>();
+    private int enemiesCreated;
+    private int enemiesKilled;
+    private long lastSpawn;
+    long currentTime;
+    private DifficultyStrategy difficulty;
 
     public void init() {
+
         System.out.println(System.getProperty("user.dir"));
         background = new Picture(0,0, "resources/space4.jpg");
         background.draw();
@@ -35,11 +42,13 @@ public class Game {
         grid = new Grid();
         grid.init();
 
-        Position playerPosition = new Position(grid, 0, 0, "resources/playerShip.png");
-        player = new Player(playerPosition);
+       difficulty = new NormalMode();
 
-        Position enemyPosition = new Position(grid, grid.getCols() - 2, 0, "resources/Enemy.png");
-        enemy = new Enemy(grid, enemyPosition);
+
+        createPlayer();
+        createEnemy();
+         lastSpawn = System.currentTimeMillis(); // last time enemy was created
+
 
         collisionDetector = new CollisionDetector();
 
@@ -65,25 +74,50 @@ public class Game {
         }
     }
 
-    private void update() {
+    public void update() {
 
         if (!running) {
             return;
         }
-
-        // Move player and enemy
+        currentTime = System.currentTimeMillis();
+        // Move player and its bullets
         player.move();
-        enemy.move();
-
-        // Move bullets
         player.movePlayerBullets();
-        enemy.moveEnemyBullets();
+
+
+        if (currentTime - lastSpawn >= 1000 && enemiesCreated <10 && enemies.size()<=3) {// se passaram pelo menos 5000 milissegundos desde a criação do ultimo inimigo ,
+            // numero de inimigos criados nao aitngiu os 10 e o numero de inimigos ativos é menor que 3, cria-se novo inimigo
+            createEnemy();
+            lastSpawn = currentTime;
+        }
+        // move enemies and their bullets
+        for(Enemy enemy: enemies){ // aqui estou a aceder à lista de inimigos
+            enemy.move();
+            enemy.moveEnemyBullets();
+        }
+
 
         // Check collisions
         resolveCollisions();
     }
 
-    private void resolveCollisions() {
+    public void createEnemy(){
+
+        Position enemyPosition = new Position(grid, grid.getCols() - 2, 0, "resources/Enemy.png");
+        Enemy enemy = new Enemy(grid, enemyPosition,difficulty);
+        enemies.add(enemy);
+        enemiesCreated++;
+
+    }
+
+    public void createPlayer(){
+
+        Position playerPosition = new Position(grid, 0, 0, "resources/playerShip.png");
+        player = new Player(playerPosition,this);
+
+    }
+
+    public void resolveCollisions() {
 
         boolean enemyWasHit = false;
         boolean playerWasHit = false;
@@ -96,42 +130,51 @@ public class Game {
             if (!bullet.isBulletActive()) {
                 continue;
             }
+            for (int i = enemies.size() - 1; i >= 0; i--) {
+                if (collisionDetector.collides(bullet.getPosition(), enemies.get(i).getPosition())) {
 
-            if (collisionDetector.collides(
-                    bullet.getPosition(),
-                    enemy.getPosition())) {
+                    bullet.deactivate();
+                    enemies.get(i).hit();
+                    enemies.get(i).removeEnemyBullets();//remove bullets graphically and from array list
+                    enemies.get(i).removeEnemy();// remove enemy graphically
+                    enemies.remove(i);//remove enemy from list
 
-                bullet.deactivate();
-                enemy.hit();
-                tryScore = tryScore + 50;
-                Score.setText("SCORE: " + tryScore);
 
-                enemyWasHit = true;
+                    tryScore = tryScore + 50;
+                    Score.setText("SCORE: " + tryScore);
+
+                    enemyWasHit = true;
+
+                    break;
+                }
             }
         }
 
         /**
          * Enemy bullets -> Player
          */
-        for (Bullet bullet : enemy.getBullets()) {
+        for (Enemy enemy : enemies) {
+            for (Bullet bullet : enemy.getBullets()) {
 
-            if (!bullet.isBulletActive()) {
-                continue;
+                if (!bullet.isBulletActive()) {
+                    continue;
+                }
+
+                if (collisionDetector.collides(
+                        bullet.getPosition(),
+                        player.getPosition())) {
+
+                    bullet.deactivate();
+                    player.hit();
+                    updatePlayerLivesDisplay();
+
+                    playerWasHit = true;
+
+                }
             }
 
-            if (collisionDetector.collides(
-                    bullet.getPosition(),
-                    player.getPosition())) {
 
-                bullet.deactivate();
-                player.hit();
-                updatePlayerLivesDisplay();
-
-                playerWasHit = true;
-
-            }
         }
-
         if (!enemyWasHit && !playerWasHit) {
             return;
         }
@@ -153,7 +196,7 @@ public class Game {
 /**
  * The enemy was hit
  */
-        if (enemyWasHit) {
+        if (enemyWasHit && enemiesCreated == 10 && enemies.isEmpty()){
             if (tryScore>highScore){
                 highScore = tryScore;
             }
@@ -197,7 +240,7 @@ public class Game {
         }
     }
 
-    private void pauseGameLoop() {
+    public void pauseGameLoop() {
 
         try {
             Thread.sleep(FRAME_DELAY);
@@ -213,7 +256,7 @@ public class Game {
 
 
 
-    private void drawPlayerLives() {
+    public void drawPlayerLives() {
 
         int spacing = 10;
 
@@ -235,7 +278,7 @@ public class Game {
     }
 
 
-    private void updatePlayerLivesDisplay() {
+    public void updatePlayerLivesDisplay() {
 
         // Remove icons until the display matches the player's current lives
         while (lifeIcons.size() > player.getLives()) {
@@ -250,8 +293,21 @@ public class Game {
 
     }
 
-    private void scoreTimer(){ //when each second goes by, the player loses a point
+    public void activateEasyMode(){
+        // Aqui estou a desacelerar os movimentos dos inimigos e das suas balas
+
+        difficulty = new EasyMode();
+
+        for(Enemy enemy: enemies){
+            enemy.setDifficulty(difficulty);
+
+        }
+    }
+
+
+    public void scoreTimer(){ //when each second goes by, the player loses a point
 
     }
+
 
 }

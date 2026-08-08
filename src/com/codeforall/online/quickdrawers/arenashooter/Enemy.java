@@ -10,9 +10,8 @@ public class Enemy implements Shootable, Movable{
     private Directions currentDirection = Directions.UP;
     private int stepsRemaining = 0;
     private int frameCounter = 0;
-    private static final int MOVE_DELAY = 10;
     private boolean alive =true;
-    private Bullet bullet;
+    private DifficultyStrategy difficulty;
 
     //creating array list for bullets
     private List<Bullet> bullets = new ArrayList<>();
@@ -20,17 +19,19 @@ public class Enemy implements Shootable, Movable{
     // Stores the time (milliseconds) of the last time the enemy shot
     private long lastShootTime = 0;
 
-    public Enemy(Grid grid, Position position){
+    public Enemy(Grid grid, Position position, DifficultyStrategy difficulty){
         this.grid = grid;
         this.position = position;
+        this.difficulty = difficulty;
     }
 
     @Override
     public void move() {
 
        frameCounter++;
+        System.out.println(difficulty.getEnemyMoveDelay());
 
-       if (frameCounter < MOVE_DELAY) { // to desacelerate the enemy movement
+       if (frameCounter < difficulty.getEnemyMoveDelay()) { // to desacelerate the enemy movement
            return;
         }
 
@@ -69,9 +70,9 @@ public class Enemy implements Shootable, Movable{
             stepsRemaining--;
         }
 
-        long currentTime = System.currentTimeMillis();
+        long currentTime = System.currentTimeMillis(); // devolve o momento atual em milissegundos
 
-        if (currentTime - lastShootTime >= 1000) {
+        if (currentTime - lastShootTime >= 1000) {// se passaram pelo menos 1000 milissegundos desde o ultimo disparo, volto a disparar
             shoot();
             lastShootTime = currentTime;
         }
@@ -79,7 +80,8 @@ public class Enemy implements Shootable, Movable{
 
     @Override
     public void shoot() {
-        Bullet bullet = new Bullet(grid, position, "resources/enemyBullet.png", false);
+        System.out.println("Enemy shot");
+        Bullet bullet = new Bullet(grid, position, "resources/enemyBullet.png", false, difficulty);
         bullets.add(bullet);
     }
 
@@ -112,6 +114,22 @@ public class Enemy implements Shootable, Movable{
     public void hit(){
         alive= false;
     }
+
+    public void removeEnemy(){
+        this.position.remove();
+
+    }
+
+    public void removeEnemyBullets(){
+        for(int i=bullets.size()-1;i >=0; --i ){
+            bullets.get(i).removeBullet();// removes graphically
+            bullets.remove(i);// removes from arraylist
+        }
+    }
+
+   public void setDifficulty(DifficultyStrategy difficulty){
+       this.difficulty = difficulty;
+   }
 
 }
 
