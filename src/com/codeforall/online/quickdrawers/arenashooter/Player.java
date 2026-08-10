@@ -13,14 +13,18 @@ public class Player implements Shootable, Movable, KeyboardHandler {
     private Keyboard keyboard;
     private Directions direction;
     private Position position;
-    private Bullet bullet;
-    private boolean alive = false;
+    private static final int INITIAL_LIVES = 3;
+    private int lives = INITIAL_LIVES;
     private List<Bullet> bullets = new ArrayList<>();
+    private Game game;
+    private static final int PLAYER_MOVE_DELAY = 3;
+    private int frameCounter = 0;
 
 
-    public Player(Position position) {
+    public Player(Position position, Game game) {
         this.keyboard = new Keyboard(this);
         this.position = position;
+        this.game = game;
         initKeys();
     }
 
@@ -57,6 +61,13 @@ public class Player implements Shootable, Movable, KeyboardHandler {
 
         keyboard.addEventListener(space);
 
+        // for hidden easy mode
+        KeyboardEvent x = new KeyboardEvent();
+        x.setKey(KeyboardEvent.KEY_X);
+        x.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+
+        keyboard.addEventListener(x);
+
 
     }
 
@@ -67,6 +78,14 @@ public class Player implements Shootable, Movable, KeyboardHandler {
 
     @Override
     public void move() {
+
+        frameCounter++;
+
+        if (frameCounter < PLAYER_MOVE_DELAY) {
+            return;
+        }
+
+        frameCounter = 0;
         if (direction == null) {
             return;
         }
@@ -98,6 +117,13 @@ public class Player implements Shootable, Movable, KeyboardHandler {
 
             shoot();
             return;
+
+
+        }
+        if (keyboardEvent.getKey() == KeyboardEvent.KEY_X) {// here I am associating the UP arrow key to the direction up
+           game.activateEasyMode();
+            return;
+
 
         }
     }
@@ -140,13 +166,24 @@ public class Player implements Shootable, Movable, KeyboardHandler {
             }
         }
     }
-
-    public boolean isAlive() {
-        return alive;
+    public int getLives() {
+        return lives;
     }
 
-    public boolean hit(){
-        return !alive;
+    public boolean isAlive() {
+        return lives >0;
+    }
+
+    public boolean hit() {
+
+        // Prevent the number of lives from becoming negative
+        if (lives > 0) {
+            lives--;
+        }
+
+        System.out.println("Player lives: " + lives);
+
+        return isAlive();
     }
 
 
