@@ -72,10 +72,12 @@ public class Position {
         return row;
     }
 
-    public void removeBullet(){// irá remover a bullet graficamente
+    public void delete(){
         picture.translate(-5000, -5000);
         picture.delete();
-
+    }
+    public void removeBullet(){// irá remover a bullet graficamente
+        delete();
     }
 
     public Grid getGrid() {
