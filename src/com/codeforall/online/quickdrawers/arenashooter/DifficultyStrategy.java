@@ -4,4 +4,5 @@ public interface DifficultyStrategy {
 
     int getEnemyMoveDelay();
     int getEnemyBulletMoveDelay();
+    int getEnemySpawnDelay();
 }

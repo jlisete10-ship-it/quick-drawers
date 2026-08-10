@@ -12,4 +12,9 @@ public class NormalMode implements  DifficultyStrategy{
     public int getEnemyBulletMoveDelay() {
         return 4;
     }
+
+    @Override
+    public int getEnemySpawnDelay() {
+        return 1000;
+    }
 }

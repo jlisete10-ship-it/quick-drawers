@@ -1,6 +1,6 @@
 package com.codeforall.online.quickdrawers.arenashooter;
 
-public class Bullet implements Movable{
+public class Bullet implements Movable {
 
     private Position position;
     private Grid grid;
@@ -9,78 +9,87 @@ public class Bullet implements Movable{
     private int frameCounter = 0;
     private DifficultyStrategy difficulty;
     private boolean enemyBullet;
-    private int moveDelay =5;
+    private int moveDelay = 5;
 
 
-    //public Bullet (Grid grid, Position position){// este position recebido como parametro é o position do player
-        // A Bullet recebe a posição atual do Player, consulta onde ele está e define o
-        // início uma coluna à direita, mantendo a mesma linha.
-    /**
-     * Lorenzo:
-     * Creating a new Bullet Constructor with Grid, Shooter Position (Player or Enemy),
-     * the image path and a boolean "moving right" > if true player bullet for the right
-     * if false, enemy bullet for the left
-     */
 
-    public Bullet(Grid grid, Position shooterPosition, String imagePath, boolean movingRight){ // for player
+     // Constructor for player bullets.
+
+     // movingRight = true -> player bullet
+        //movingRight = false -> enemy bullet
+
+    public Bullet(Grid grid, Position shooterPosition, String imagePath, boolean movingRight) {
+
         this.grid = grid;
         this.movingRight = movingRight;
         this.difficulty = difficulty;
         this.enemyBullet = false;
-        //If the bullet is going right, create the bullet in the col on the right from the one who shot
-        //If the bullet is going left, create the bullet in the col on the left from the one who shot
+
+        // Player bullet starts one column to the right of the player
         int startCol;
+
         if (movingRight) {
             startCol = shooterPosition.getCol() + 1;
         } else {
-            startCol = shooterPosition.getCol() -1;
+            startCol = shooterPosition.getCol() - 1;
         }
-        //Creat the bullet in the same line of the one who shot
+
+        // Same row as the shooter
         int startRow = shooterPosition.getRow();
 
-        // Creating a position for bullet
         this.position = new Position(grid, startCol, startRow, imagePath);
     }
-     public Bullet(Grid grid, Position shooterPosition, String imagePath, boolean movingRight, DifficultyStrategy difficulty){// for enemy
+
+
+    /**
+     * Constructor for enemy bullets.
+     */
+    public Bullet(
+            Grid grid,
+            Position shooterPosition,
+            String imagePath,
+            boolean movingRight,
+            DifficultyStrategy difficulty) {
+
         this.grid = grid;
         this.movingRight = movingRight;
         this.difficulty = difficulty;
         this.enemyBullet = true;
 
-        //If the bullet is going right, create the bullet in the col on the right from the one who shot
-        //If the bullet is going left, create the bullet in the col on the left from the one who shot
+        // Enemy bullet starts one column to the left of the enemy
         int startCol;
+
         if (movingRight) {
             startCol = shooterPosition.getCol() + 1;
         } else {
-            startCol = shooterPosition.getCol() -1;
+            startCol = shooterPosition.getCol() - 1;
         }
-        //Creat the bullet in the same line of the one who shot
+
+        // Same row as the shooter
         int startRow = shooterPosition.getRow();
 
-        // Creating a position for bullet
-        this.position = new Position(grid, startCol, startRow, imagePath);
-        
-
-
+        this.position = new Position(
+                grid,
+                startCol,
+                startRow,
+                imagePath
+        );
     }
+
 
     @Override
     public void move() {
-        /**
-         * Which way the bullet is going, move the bullet in this direction and
-         * if the bullet is off the limits turn it off
-         */
 
         frameCounter++;
-        if(enemyBullet) {
-            if (frameCounter < difficulty.getEnemyBulletMoveDelay()) {// controls the speed of the bullet
+
+        if (enemyBullet) {
+            if (frameCounter < difficulty.getEnemyBulletMoveDelay()) {
                 return;
             }
         }
 
-        if(!enemyBullet){
-            if (frameCounter < moveDelay) {// controls the speed of the bullet of player
+        if (!enemyBullet) {
+            if (frameCounter < moveDelay) {
                 return;
             }
         }
@@ -95,22 +104,32 @@ public class Bullet implements Movable{
             stillInsideGrid = position.moveLeft();
         }
 
+        System.out.println(
+                "Bullet move - col: "
+                        + position.getCol()
+                        + " active: "
+                        + bulletOn
+        );
+
         if (!stillInsideGrid) {
-            bulletOn = false;
+            deactivate();
         }
     }
 
-    public boolean isBulletActive(){
+    public boolean isBulletActive() {
         return bulletOn;
     }
 
-    public void removeBullet(){
-        this.position.remove();
+
+    public void removeBullet() {
+        position.removeBullet();
     }
+
 
     public Position getPosition() {
         return position;
     }
+
 
     public void deactivate() {
 
@@ -119,8 +138,8 @@ public class Bullet implements Movable{
         }
 
         bulletOn = false;
+
+        // Remove the bullet graphically from the screen
+        position.removeBullet();
     }
-
-
-
 }

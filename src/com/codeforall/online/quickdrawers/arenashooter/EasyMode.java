@@ -13,4 +13,11 @@ public class EasyMode implements DifficultyStrategy{
     public int getEnemyBulletMoveDelay() {
         return 5;
     }
+
+    @Override
+    public int getEnemySpawnDelay() {
+        return 2500;
+    }
+
 }
+
