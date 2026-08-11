@@ -43,3 +43,19 @@ Game Mechanics:
         - Update player and enemy movement.
         - Update bullets.
         - Check collisions.
+
+Improvements implemented:
+        Added a game menu with Start and Restart buttons.
+        Added multiple enemies and enemy spawning.
+        Added Normal and Easy difficulty modes.
+        Added Easy Mode activation using the `X` key.
+        Added player lives and life icons.
+        Added score and persistent high score using file I/O.
+        Added game over and victory screens.
+        Improved game restart by reusing the Player and keyboard listener.
+        Added new game resources and background.
+
+
+
+
+
